@@ -8,26 +8,48 @@ class TachometerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Offset center = Offset(1400, 500);
+    const double maxAngle = 320;
+    const double radius = 300;
     CirclePainter(
       center: center, // Tọa độ trung tâm của hình tròn
-      radius: 300, // Bán kính
+      radius: radius, // Bán kính
       startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
-      endAngle: 320, //
+      endAngle: maxAngle, //
       isClockWise: false,
     ).paint(canvas, size);
+
     CirclePainter(
       center: center, // Tọa độ trung tâm của hình tròn
-      radius: 250, // Bán kính
+      radius: radius - 40, // Bán kính
       startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
-      endAngle: 320, //
+      endAngle: 90 + ((maxAngle - 90) * value / maxValue), //
       isClockWise: false,
       color: Colors.white,
     ).paint(canvas, size);
+    //  final highlights = List.generate(lenHighlight.toInt() + 1,
+    //     (index) => 135 + ((2 * angle * 135 / (maxSpeed * 10)) * index));
+    // for (int i = 0; i < highlights.length; i++) {
+    //   var angle = highlights[i];
+    //   final start = angleToOffset(center, angle, radius * 0.73);
+    //   final end = angleToOffset(center, angle, radius * 0.63);
+    //   canvas.drawLine(start, end, paintHighlight);
+
+    //   final tp = TextPainter(
+    //       text: TextSpan(
+    //         text: "${i * (maxSpeed / lenHighlight).toInt()}",
+    //         style: TextStyle(fontSize: w / 25, color: Colors.white),
+    //       ),
+    //       textDirection: TextDirection.ltr);
+    //   tp.layout();
+    //   final textOffset = angleToOffset(center, angle, radius * 0.55);
+    //   final centered =
+    //       Offset(textOffset.dx - tp.width / 2, textOffset.dy - tp.height / 2);
+    //   tp.paint(canvas, centered);
+    // }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    // TODO: implement shouldRepaint
     return true;
   }
 }
@@ -85,7 +107,7 @@ class _TachometerState extends State<Tachometer>
       child: AnimatedBuilder(
         animation: anim,
         builder: (context, child) {
-          return CustomPaint(painter: TachometerPainter(value: 6));
+          return CustomPaint(painter: TachometerPainter(value: anim.value));
         },
       ),
     );

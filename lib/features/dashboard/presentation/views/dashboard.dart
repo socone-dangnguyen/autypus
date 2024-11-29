@@ -74,7 +74,7 @@ class _DashboardState extends State<Dashboard> {
             Highway(),
             Speedometer(),
             Tachometer(
-              value: 5,
+              value: 10,
             ),
             const Positioned(
               right: 0,
