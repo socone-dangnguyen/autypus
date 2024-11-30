@@ -1,3 +1,5 @@
+import 'package:autypus/configs/themes/app_colors.dart';
+import 'package:autypus/core/utils/utils.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/painter/circle.dart';
 import 'package:flutter/material.dart';
 
@@ -20,32 +22,48 @@ class TachometerPainter extends CustomPainter {
 
     CirclePainter(
       center: center, // Tọa độ trung tâm của hình tròn
-      radius: radius - 40, // Bán kính
+      radius: radius - 30, // Bán kính
       startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
       endAngle: 90 + ((maxAngle - 90) * value / maxValue), //
       isClockWise: false,
+      strokeWidth: 4,
       color: Colors.white,
     ).paint(canvas, size);
-    //  final highlights = List.generate(lenHighlight.toInt() + 1,
-    //     (index) => 135 + ((2 * angle * 135 / (maxSpeed * 10)) * index));
-    // for (int i = 0; i < highlights.length; i++) {
-    //   var angle = highlights[i];
-    //   final start = angleToOffset(center, angle, radius * 0.73);
-    //   final end = angleToOffset(center, angle, radius * 0.63);
-    //   canvas.drawLine(start, end, paintHighlight);
-
-    //   final tp = TextPainter(
-    //       text: TextSpan(
-    //         text: "${i * (maxSpeed / lenHighlight).toInt()}",
-    //         style: TextStyle(fontSize: w / 25, color: Colors.white),
-    //       ),
-    //       textDirection: TextDirection.ltr);
-    //   tp.layout();
-    //   final textOffset = angleToOffset(center, angle, radius * 0.55);
-    //   final centered =
-    //       Offset(textOffset.dx - tp.width / 2, textOffset.dy - tp.height / 2);
-    //   tp.paint(canvas, centered);
-    // }
+    final highlights = List.generate(maxValue.toInt() + 1,
+        (index) => 90 - ((maxAngle - 90) * index / maxValue));
+    final paintHighlight = Paint()
+      ..color = AppColors.primary100Color.withOpacity(0.3)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    for (int i = 0; i < highlights.length; i++) {
+      var angle = highlights[i];
+      final start = GeometryUtils.calculatePoint(center, angle, radius);
+      final end = GeometryUtils.calculatePoint(center, angle, radius * 0.85);
+      canvas.drawLine(start, end, paintHighlight);
+      final tp = TextPainter(
+        text: TextSpan(
+          text: "${i}",
+          style: TextStyle(
+              fontSize: 24, color: Colors.white, fontFamily: 'Montserrat'),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      tp.layout();
+      final textOffset =
+          GeometryUtils.calculatePoint(center, angle, radius * 0.75);
+      final centered =
+          Offset(textOffset.dx - tp.width / 2, textOffset.dy - tp.height / 2);
+      tp.paint(canvas, centered);
+    }
+    Paint linePaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    canvas.drawLine(
+        center,
+        GeometryUtils.calculatePoint(
+            center, (90 - (maxAngle - 90) * value / maxValue), radius * 0.65),
+        linePaint);
   }
 
   @override

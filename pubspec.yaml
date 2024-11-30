@@ -37,6 +37,7 @@ dependencies:
   model_viewer_plus: ^1.9.1
   flutter_svg: ^2.0.16
   flutter_box_transform: ^0.4.6
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:

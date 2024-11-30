@@ -10,20 +10,22 @@ class CirclePainter extends CustomPainter {
   final double endAngle; // Góc kết thúc (tính từ trục X)
   final isClockWise;
   final Color color;
+  final double strokeWidth;
   CirclePainter(
       {required this.center,
       required this.radius,
       required this.startAngle,
       required this.endAngle,
       this.isClockWise = true,
-      this.color = AppColors.primary100Color});
+      this.color = AppColors.primary100Color,
+      this.strokeWidth = 2});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
+      ..strokeWidth = strokeWidth;
 
     // Chuyển góc từ độ sang radian
     double startRadian = GeometryUtils.degreeToRadian(startAngle);

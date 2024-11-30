@@ -46,22 +46,6 @@ class TrapezoidPainter extends CustomPainter {
 
     canvas.drawLine(startPoint, point_2, borderPaint);
     canvas.drawLine(point_1, point_3, borderPaint);
-
-    // Tạo paint cho hiệu ứng mờ (blur)
-    final blurPaint = Paint()
-      ..color = Colors.black.withOpacity(0.1)
-      // Không có màu để chỉ giữ lại hiệu ứng mờ
-      ..maskFilter = MaskFilter.blur(BlurStyle.normal, 4.0); // Tăng độ mờ
-
-    // Vẽ các điểm mờ tại startPoint và point_1
-    // Thêm hiệu ứng mờ tại startPoint và point_1
-    canvas.drawCircle(
-        startPoint, 80.0, blurPaint); // Vẽ vòng tròn mờ tại startPoint
-    canvas.drawCircle(point_1, 80.0, blurPaint); // Vẽ vòng tròn mờ tại point_1
-
-    // Vẽ mờ dọc theo các cạnh của hình thang (từ startPoint đến point_2 và từ point_1 đến point_3)
-    _drawBlurLine(
-        canvas, startPoint, point_1, blurPaint); // Mờ dọc theo cạnh trái
   }
 
   // Hàm vẽ mờ dọc theo một đường thẳng

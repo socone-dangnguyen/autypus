@@ -72,9 +72,8 @@ class _DashboardState extends State<Dashboard> {
         body: Stack(
           children: [
             Highway(),
-            Speedometer(),
             Tachometer(
-              value: 10,
+              value: 7,
             ),
             const Positioned(
               right: 0,
