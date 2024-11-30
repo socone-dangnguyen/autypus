@@ -1,3 +1,4 @@
+import 'package:autypus/configs/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class MenuExtension extends StatelessWidget {
@@ -5,6 +6,8 @@ class MenuExtension extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      backgroundColor: AppColors.darkColor,
+    );
   }
 }

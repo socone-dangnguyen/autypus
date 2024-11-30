@@ -12,7 +12,7 @@ class CarDataModel extends ChangeNotifier {
   int _climateControl = 0;
   String _drivingMode = '';
   bool _warningLights = false;
-  int _fuelGauge = 0;
+  double _fuelGauge = 0.0; // Changed to double to match generator
   String _turnDirection = '';
   bool _turnSignal = false;
   bool _brakeStatus = false;
@@ -36,7 +36,7 @@ class CarDataModel extends ChangeNotifier {
     int? climateControl,
     String? drivingMode,
     bool? warningLights,
-    int? fuelGauge,
+    double? fuelGauge, // Changed to double
     String? turnDirection,
     bool? turnSignal,
     bool? brakeStatus,
@@ -58,7 +58,7 @@ class CarDataModel extends ChangeNotifier {
         _climateControl = climateControl ?? 0,
         _drivingMode = drivingMode ?? '',
         _warningLights = warningLights ?? false,
-        _fuelGauge = fuelGauge ?? 0,
+        _fuelGauge = fuelGauge ?? 0.0, // Changed to 0.0
         _turnDirection = turnDirection ?? '',
         _turnSignal = turnSignal ?? false,
         _brakeStatus = brakeStatus ?? false,
@@ -70,7 +70,7 @@ class CarDataModel extends ChangeNotifier {
         _batteryStatus = batteryStatus ?? 0,
         _errorLightStatus = errorLightStatus ?? false;
 
-  // Getter methods
+  // Getter methods (updated return type for fuelGauge)
   int get odometer => _odometer;
   double get temperatureGauge => _temperatureGauge;
   double get temperatureOutside => _temperatureOutside;
@@ -82,7 +82,7 @@ class CarDataModel extends ChangeNotifier {
   int get climateControl => _climateControl;
   String get drivingMode => _drivingMode;
   bool get warningLights => _warningLights;
-  int get fuelGauge => _fuelGauge;
+  double get fuelGauge => _fuelGauge; // Changed to double
   String get turnDirection => _turnDirection;
   bool get turnSignal => _turnSignal;
   bool get brakeStatus => _brakeStatus;
@@ -97,19 +97,28 @@ class CarDataModel extends ChangeNotifier {
   // Method to update the CarDataModel with new data
   void updateData(Map<String, dynamic> jsonData) {
     _odometer = jsonData['Odometer'] ?? _odometer;
-    _temperatureGauge =
-        jsonData['Temperature gauge']?.toDouble() ?? _temperatureGauge;
-    _temperatureOutside =
-        jsonData['Temperature outside']?.toDouble() ?? _temperatureOutside;
+    _temperatureGauge = (jsonData['Temperature gauge'] is num
+        ? jsonData['Temperature gauge'].toDouble()
+        : _temperatureGauge);
+    _temperatureOutside = (jsonData['Temperature outside'] is num
+        ? jsonData['Temperature outside'].toDouble()
+        : _temperatureOutside);
     _lightDirection = jsonData['Light Direction'] ?? _lightDirection;
     _tachometer = jsonData['Tachometer'] ?? _tachometer;
     _speedometer = jsonData['Speedometer'] ?? _speedometer;
-    _oilPressure = jsonData['Oil Pressure']?.toDouble() ?? _oilPressure;
+    _oilPressure = (jsonData['Oil Pressure'] is num
+        ? jsonData['Oil Pressure'].toDouble()
+        : _oilPressure);
     _clock = jsonData['Clock'] ?? _clock;
     _climateControl = jsonData['Climate Control'] ?? _climateControl;
     _drivingMode = jsonData['Driving Mode'] ?? _drivingMode;
     _warningLights = jsonData['Warning Lights'] ?? _warningLights;
-    _fuelGauge = jsonData['Fuel Gauge'] ?? _fuelGauge;
+
+    // Handle Fuel Gauge as a double
+    _fuelGauge = (jsonData['Fuel Gauge'] is num
+        ? jsonData['Fuel Gauge'].toDouble()
+        : _fuelGauge);
+
     _turnDirection = jsonData['Turn Direction'] ?? _turnDirection;
     _turnSignal = jsonData['Turn Signal'] ?? _turnSignal;
     _brakeStatus = jsonData['Brake Status'] ?? _brakeStatus;
@@ -118,9 +127,9 @@ class CarDataModel extends ChangeNotifier {
         jsonData['Parking Sensor Status'] ?? _parkingSensorStatus;
     _stabilityControlStatus =
         jsonData['Stability Control Status'] ?? _stabilityControlStatus;
-    _averageFuelConsumption =
-        jsonData['Average Fuel Consumption']?.toDouble() ??
-            _averageFuelConsumption;
+    _averageFuelConsumption = (jsonData['Average Fuel Consumption'] is num
+        ? jsonData['Average Fuel Consumption'].toDouble()
+        : _averageFuelConsumption);
     _engineTemperature = jsonData['Engine Temperature'] ?? _engineTemperature;
     _batteryStatus = jsonData['Battery Status'] ?? _batteryStatus;
     _errorLightStatus = jsonData['Error Light Status'] ?? _errorLightStatus;
@@ -133,24 +142,33 @@ class CarDataModel extends ChangeNotifier {
   factory CarDataModel.fromJson(Map<String, dynamic> json) {
     return CarDataModel(
       odometer: json['Odometer'],
-      temperatureGauge: json['Temperature gauge'].toDouble(),
-      temperatureOutside: json['Temperature outside'].toDouble(),
+      temperatureGauge: (json['Temperature gauge'] is num
+          ? json['Temperature gauge'].toDouble()
+          : null),
+      temperatureOutside: (json['Temperature outside'] is num
+          ? json['Temperature outside'].toDouble()
+          : null),
       lightDirection: json['Light Direction'],
       tachometer: json['Tachometer'],
       speedometer: json['Speedometer'],
-      oilPressure: json['Oil Pressure'].toDouble(),
+      oilPressure: (json['Oil Pressure'] is num
+          ? json['Oil Pressure'].toDouble()
+          : null),
       clock: json['Clock'],
       climateControl: json['Climate Control'],
       drivingMode: json['Driving Mode'],
       warningLights: json['Warning Lights'],
-      fuelGauge: json['Fuel Gauge'],
+      fuelGauge:
+          (json['Fuel Gauge'] is num ? json['Fuel Gauge'].toDouble() : null),
       turnDirection: json['Turn Direction'],
       turnSignal: json['Turn Signal'],
       brakeStatus: json['Brake Status'],
       tirePressure: json['Tire Pressure'],
       parkingSensorStatus: json['Parking Sensor Status'],
       stabilityControlStatus: json['Stability Control Status'],
-      averageFuelConsumption: json['Average Fuel Consumption'].toDouble(),
+      averageFuelConsumption: (json['Average Fuel Consumption'] is num
+          ? json['Average Fuel Consumption'].toDouble()
+          : null),
       engineTemperature: json['Engine Temperature'],
       batteryStatus: json['Battery Status'],
       errorLightStatus: json['Error Light Status'],

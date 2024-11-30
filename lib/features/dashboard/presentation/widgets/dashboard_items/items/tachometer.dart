@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:autypus/configs/themes/app_colors.dart';
 import 'package:autypus/core/utils/utils.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/painter/circle.dart';
@@ -9,9 +11,9 @@ class TachometerPainter extends CustomPainter {
   TachometerPainter({required this.value});
   @override
   void paint(Canvas canvas, Size size) {
-    Offset center = Offset(1400, 500);
+    Offset center = Offset(size.width / 2, size.height / 2);
     const double maxAngle = 320;
-    const double radius = 300;
+    double radius = size.width > size.height ? size.width / 2 : size.height / 2;
     CirclePainter(
       center: center, // Tọa độ trung tâm của hình tròn
       radius: radius, // Bán kính
@@ -22,7 +24,7 @@ class TachometerPainter extends CustomPainter {
 
     CirclePainter(
       center: center, // Tọa độ trung tâm của hình tròn
-      radius: radius - 30, // Bán kính
+      radius: radius * 0.9, // Bán kính
       startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
       endAngle: 90 + ((maxAngle - 90) * value / maxValue), //
       isClockWise: false,
@@ -44,7 +46,9 @@ class TachometerPainter extends CustomPainter {
         text: TextSpan(
           text: "${i}",
           style: TextStyle(
-              fontSize: 24, color: Colors.white, fontFamily: 'Montserrat'),
+              fontSize: radius / 8,
+              color: Colors.white,
+              fontFamily: 'Montserrat'),
         ),
         textDirection: TextDirection.ltr,
       );

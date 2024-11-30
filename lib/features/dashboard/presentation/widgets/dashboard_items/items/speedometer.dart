@@ -1,30 +1,137 @@
+import 'dart:math';
+
+import 'package:autypus/configs/themes/app_colors.dart';
+import 'package:autypus/core/utils/utils.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/painter/circle.dart';
 import 'package:flutter/material.dart';
 
-class Speedometer extends StatelessWidget {
-  const Speedometer({super.key});
+class SpeedometerPainter extends CustomPainter {
+  final double value;
+  final double maxValue = 240.0;
+  SpeedometerPainter({required this.value});
+  @override
+  void paint(Canvas canvas, Size size) {
+    Offset center = Offset(size.width / 2, size.height / 2);
+    const double maxAngle = 320;
+    double radius = size.width > size.height ? size.width / 2 : size.height / 2;
+    CirclePainter(
+      center: center, // Tọa độ trung tâm của hình tròn
+      radius: radius, // Bán kính
+      startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
+      endAngle: maxAngle, //
+      isClockWise: true,
+    ).paint(canvas, size);
+
+    CirclePainter(
+      center: center, // Tọa độ trung tâm của hình tròn
+      radius: radius * 0.9, // Bán kính
+      startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
+      endAngle: 90 + ((maxAngle - 90) * value / maxValue), //
+      isClockWise: true,
+      strokeWidth: 4,
+      color: Colors.white,
+    ).paint(canvas, size);
+    final highlights = List.generate((maxValue / 40).toInt() + 1,
+        (index) => 90 + ((maxAngle - 90) * 40 * index / maxValue));
+    final paintHighlight = Paint()
+      ..color = AppColors.primary100Color.withOpacity(0.3)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    for (int i = 0; i < highlights.length; i++) {
+      var angle = highlights[i];
+      final start = GeometryUtils.calculatePoint(center, angle, radius);
+      final end = GeometryUtils.calculatePoint(center, angle, radius * 0.85);
+      canvas.drawLine(start, end, paintHighlight);
+      final tp = TextPainter(
+        text: TextSpan(
+          text: "${40 * i}",
+          style: TextStyle(
+              fontSize: radius / 8,
+              color: Colors.white,
+              fontFamily: 'Montserrat'),
+        ),
+        textDirection: TextDirection.ltr,
+      );
+      tp.layout();
+      final textOffset =
+          GeometryUtils.calculatePoint(center, angle, radius * 0.75);
+      final centered =
+          Offset(textOffset.dx - tp.width / 2, textOffset.dy - tp.height / 2);
+      tp.paint(canvas, centered);
+    }
+    Paint linePaint = Paint()
+      ..color = Colors.white
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
+    canvas.drawLine(
+        center,
+        GeometryUtils.calculatePoint(
+            center, (90 + (maxAngle - 90) * value / maxValue), radius * 0.65),
+        linePaint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}
+
+class Speedometer extends StatefulWidget {
+  const Speedometer({super.key, required this.value});
+  final double value;
+
+  @override
+  State<Speedometer> createState() => _SpeedometerState();
+}
+
+class _SpeedometerState extends State<Speedometer>
+    with SingleTickerProviderStateMixin {
+  late AnimationController ctrl;
+  late Animation<double> anim;
+  @override
+  void initState() {
+    super.initState();
+
+    ctrl = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1500),
+    );
+
+    anim = Tween<double>(begin: 0, end: widget.value)
+        .animate(CurvedAnimation(parent: ctrl, curve: Curves.easeOutCubic));
+    ctrl.forward();
+  }
+
+  @override
+  void didUpdateWidget(covariant Speedometer oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Chỉ cập nhật khi giá trị speed thay đổi
+    if (oldWidget.value != widget.value) {
+      anim = Tween<double>(begin: anim.value, end: widget.value).animate(
+        CurvedAnimation(parent: ctrl, curve: Curves.easeInOut),
+      );
+      ctrl.forward(from: 0);
+    }
+  }
+
+  @override
+  void dispose() {
+    ctrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        CustomPaint(
-          painter: CirclePainter(
-            center: Offset(350, 300), // Tọa độ trung tâm của hình tròn
-            radius: 300, // Bán kính
-            startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
-            endAngle: 320, //
-          ),
-        ),
-        CustomPaint(
-          painter: CirclePainter(
-            center: Offset(350, 300), // Tọa độ trung tâm của hình tròn
-            radius: 250, // Bán kính
-            startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
-            endAngle: 320, //
-          ),
-        ),
-      ],
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: AnimatedBuilder(
+        animation: anim,
+        builder: (context, child) {
+          return CustomPaint(painter: SpeedometerPainter(value: anim.value));
+        },
+      ),
     );
   }
 }

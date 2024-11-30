@@ -1,3 +1,5 @@
+import 'package:autypus/configs/themes/app_colors.dart';
+import 'package:autypus/core/utils/dashboard_item.dart';
 import 'package:autypus/features/dashboard/domain/models/car_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_box_transform/flutter_box_transform.dart';
@@ -56,7 +58,8 @@ class _ResizableState extends State<Resizable> {
   @override
   Widget build(BuildContext context) {
     final carDataModel = Provider.of<CarDataModel>(context);
-    Widget copyWidget = GetInstance.getCarInstance(widget.child, carDataModel);
+    Widget copyWidget =
+        DashboardItem.getCarInstance(widget.child, carDataModel);
     if (controller == null) {
       return const SizedBox.shrink();
     }
@@ -74,7 +77,7 @@ class _ResizableState extends State<Resizable> {
                       color: Colors.transparent,
                       border: Border.all(
                         color: isSelected
-                            ? AppColor.primaryColor
+                            ? AppColors.primary100Color
                             : Colors.transparent,
                         width: 2,
                       ),
