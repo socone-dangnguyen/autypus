@@ -1,39 +1,41 @@
 import 'package:autypus/configs/themes/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_box_transform/flutter_box_transform.dart';
 import 'package:flutter_svg/svg.dart';
 
-class TurnIndicator extends StatelessWidget {
+class LightDirection extends StatelessWidget {
   final String direction;
-  const TurnIndicator({super.key, required this.direction});
+  const LightDirection({super.key, required this.direction});
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
               color: Colors.grey.shade700, shape: BoxShape.circle),
           child: SvgPicture.asset(
-            'assets/icons/left_indicator.svg',
-            color: direction == 'L'
+            'assets/icons/dipper.svg',
+            width: 25,
+            color: direction == 'Down'
                 ? AppColors.primary100Color
-                : Colors.grey.shade500,
-            width: 20,
+                : Colors.grey.shade400,
           ),
+        ),
+        const SizedBox(
+          width: 20,
         ),
         Container(
           padding: const EdgeInsets.all(5),
           decoration: BoxDecoration(
               color: Colors.grey.shade700, shape: BoxShape.circle),
           child: SvgPicture.asset(
-            'assets/icons/right_indicator.svg',
-            color: direction == 'R'
+            'assets/icons/head_light.svg',
+            width: 25,
+            color: direction == 'Top'
                 ? AppColors.primary100Color
-                : Colors.grey.shade500,
-            width: 20,
+                : Colors.grey.shade400,
           ),
         )
       ],

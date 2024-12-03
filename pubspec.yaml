@@ -69,6 +69,11 @@ flutter:
     - assets/usdz/bmw_i8.usdz
     - assets/usdz/lamborghini_aventador.usdz
     - assets/usdz/mclaren_spider.usdz
+    - assets/icons/celsius.svg
+    - assets/icons/left_indicator.svg
+    - assets/icons/right_indicator.svg
+    - assets/icons/dipper.svg
+    - assets/icons/head_light.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
