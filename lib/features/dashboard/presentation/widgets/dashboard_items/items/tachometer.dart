@@ -2,79 +2,9 @@ import 'dart:math';
 
 import 'package:autypus/configs/themes/app_colors.dart';
 import 'package:autypus/core/utils/utils.dart';
+import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/circle_meter.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/painter/circle.dart';
 import 'package:flutter/material.dart';
-
-class TachometerPainter extends CustomPainter {
-  final double value;
-  final double maxValue = 10.0;
-  TachometerPainter({required this.value});
-  @override
-  void paint(Canvas canvas, Size size) {
-    Offset center = Offset(size.width / 2, size.height / 2);
-    const double maxAngle = 320;
-    double radius = size.width > size.height ? size.width / 2 : size.height / 2;
-    CirclePainter(
-      center: center, // Tọa độ trung tâm của hình tròn
-      radius: radius, // Bán kính
-      startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
-      endAngle: maxAngle, //
-      isClockWise: false,
-    ).paint(canvas, size);
-
-    CirclePainter(
-      center: center, // Tọa độ trung tâm của hình tròn
-      radius: radius * 0.9, // Bán kính
-      startAngle: 90, // Góc bắt đầu (0 độ, tương ứng với trục X)
-      endAngle: 90 + ((maxAngle - 90) * value / maxValue), //
-      isClockWise: false,
-      strokeWidth: 4,
-      color: Colors.white,
-    ).paint(canvas, size);
-    final highlights = List.generate(maxValue.toInt() + 1,
-        (index) => 90 - ((maxAngle - 90) * index / maxValue));
-    final paintHighlight = Paint()
-      ..color = AppColors.primary100Color.withOpacity(0.3)
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-    for (int i = 0; i < highlights.length; i++) {
-      var angle = highlights[i];
-      final start = GeometryUtils.calculatePoint(center, angle, radius);
-      final end = GeometryUtils.calculatePoint(center, angle, radius * 0.85);
-      canvas.drawLine(start, end, paintHighlight);
-      final tp = TextPainter(
-        text: TextSpan(
-          text: "${i}",
-          style: TextStyle(
-              fontSize: radius / 8,
-              color: Colors.white,
-              fontFamily: 'Montserrat'),
-        ),
-        textDirection: TextDirection.ltr,
-      );
-      tp.layout();
-      final textOffset =
-          GeometryUtils.calculatePoint(center, angle, radius * 0.75);
-      final centered =
-          Offset(textOffset.dx - tp.width / 2, textOffset.dy - tp.height / 2);
-      tp.paint(canvas, centered);
-    }
-    Paint linePaint = Paint()
-      ..color = Colors.white
-      ..strokeWidth = 2
-      ..style = PaintingStyle.stroke;
-    canvas.drawLine(
-        center,
-        GeometryUtils.calculatePoint(
-            center, (90 - (maxAngle - 90) * value / maxValue), radius * 0.65),
-        linePaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
-  }
-}
 
 class Tachometer extends StatefulWidget {
   const Tachometer({super.key, required this.value});
@@ -129,7 +59,12 @@ class _TachometerState extends State<Tachometer>
       child: AnimatedBuilder(
         animation: anim,
         builder: (context, child) {
-          return CustomPaint(painter: TachometerPainter(value: anim.value));
+          return CircleMeter(
+            value: anim.value,
+            maxValue: 10,
+            numberDivisions: 10,
+            label: 'RPM',
+          );
         },
       ),
     );

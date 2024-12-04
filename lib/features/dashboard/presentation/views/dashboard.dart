@@ -1,6 +1,7 @@
 import 'package:autypus/configs/themes/app_colors.dart';
 import 'package:autypus/features/dashboard/domain/models/car_data_model.dart';
 import 'package:autypus/features/dashboard/presentation/views/menu_extension.dart';
+import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/circle_meter.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drag_body.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drawer_items.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/highway.dart';
@@ -64,7 +65,8 @@ class _DashboardState extends State<Dashboard> {
         ),
         body: Stack(
           children: [
-            Highway(),
+            // Highway(),
+
             const Positioned(
               right: 0,
               left: 0,
