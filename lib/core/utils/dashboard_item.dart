@@ -1,4 +1,5 @@
-import 'package:autypus/features/dashboard/domain/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/driving_mode_model.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/items/driving_mode.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/items/light_direction.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/items/odometer.dart';
@@ -10,6 +11,7 @@ import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/items/time.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/items/turn_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DashboardItem {
   static Widget getCarInstance(Widget inputWidget, CarDataModel carDataModel) {
@@ -26,8 +28,6 @@ class DashboardItem {
             TextSpeedometer(value: carDataModel.speedometer.toDouble());
       case Time:
         copyWidget = Time(time: carDataModel.clock);
-      case DrivingMode:
-        copyWidget = DrivingMode(mode: carDataModel.drivingMode);
       case TemperatureOutside:
         copyWidget = TemperatureOutside(value: carDataModel.temperatureOutside);
       case Odometer:
@@ -36,6 +36,10 @@ class DashboardItem {
         copyWidget = TurnIndicator(direction: carDataModel.turnDirection);
       case LightDirection:
         copyWidget = LightDirection(direction: carDataModel.lightDirection);
+      case DrivingMode:
+        copyWidget = DrivingMode(
+          mode: carDataModel.drivingMode,
+        );
       default:
         copyWidget = inputWidget;
     }

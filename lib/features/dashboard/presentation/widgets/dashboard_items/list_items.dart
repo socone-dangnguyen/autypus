@@ -58,7 +58,9 @@ class ListItems {
     },
     'Driving Mode': {
       'icon': Icon(Icons.drive_eta, color: Colors.white, size: 27),
-      'container': DrivingMode(mode: 'N')
+      'container': DrivingMode(
+        mode: '',
+      )
     },
     'Odometer': {
       'icon': Icon(Icons.speed, color: Colors.white, size: 27),

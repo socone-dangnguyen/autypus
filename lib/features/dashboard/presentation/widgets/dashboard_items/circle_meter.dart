@@ -178,7 +178,7 @@ class CircleMeterPainter extends CustomPainter {
         endLine,
       ], true);
     canvas.drawPath(path, paint);
-    for (double i = 135; i < endAngle - 1; i += 0.5) {
+    for (double i = 135; i < endAngle - 1; i += 0.25) {
       final p1 = GeometryUtils.calculatePoint(center, i, radius * 0.92);
       final p2 = GeometryUtils.calculatePoint(center, i + 1, radius * 0.92);
       final p3 = GeometryUtils.calculatePoint(center, i, (radius * 2 / 3));

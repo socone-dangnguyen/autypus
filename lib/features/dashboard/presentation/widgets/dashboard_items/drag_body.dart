@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:autypus/configs/socket/app_socket.dart';
-import 'package:autypus/features/dashboard/domain/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/car_data_model.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drop.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/resize.dart';
 import 'package:flutter/material.dart';

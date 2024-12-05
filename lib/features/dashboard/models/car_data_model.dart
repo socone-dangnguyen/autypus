@@ -93,6 +93,10 @@ class CarDataModel extends ChangeNotifier {
   int get engineTemperature => _engineTemperature;
   int get batteryStatus => _batteryStatus;
   bool get errorLightStatus => _errorLightStatus;
+  void updateDrivingMode(String mode) {
+    _drivingMode = mode;
+    notifyListeners();
+  }
 
   // Method to update the CarDataModel with new data
   void updateData(Map<String, dynamic> jsonData) {

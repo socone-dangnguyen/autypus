@@ -1,6 +1,7 @@
 import 'package:autypus/configs/themes/app_colors.dart';
 import 'package:autypus/core/utils/dashboard_item.dart';
-import 'package:autypus/features/dashboard/domain/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/driving_mode_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_box_transform/flutter_box_transform.dart';
 import 'package:provider/provider.dart';
@@ -58,6 +59,8 @@ class _ResizableState extends State<Resizable> {
   @override
   Widget build(BuildContext context) {
     final carDataModel = Provider.of<CarDataModel>(context);
+    final drivingMode = Provider.of<DrivingModeModel>(context).key;
+    carDataModel.updateDrivingMode(drivingMode);
     Widget copyWidget =
         DashboardItem.getCarInstance(widget.child, carDataModel);
     if (controller == null) {

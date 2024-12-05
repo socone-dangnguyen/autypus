@@ -1,11 +1,13 @@
 import 'package:autypus/configs/themes/app_colors.dart';
-import 'package:autypus/features/dashboard/domain/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/car_data_model.dart';
+import 'package:autypus/features/dashboard/models/driving_mode_model.dart';
 import 'package:autypus/features/dashboard/presentation/views/menu_extension.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/circle_meter.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drag_body.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drawer_items.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/highway.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/items/tachometer.dart';
+import 'package:autypus/features/dashboard/presentation/widgets/event/keyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:model_viewer_plus/model_viewer_plus.dart';
 import 'package:provider/provider.dart';
@@ -86,8 +88,19 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ),
             ),
-            ChangeNotifierProvider(
-                create: (context) => CarDataModel(), child: const DragBody()),
+            MultiProvider(
+              providers: [
+                ChangeNotifierProvider(
+                  create: (context) => CarDataModel(),
+                ),
+                ChangeNotifierProvider(
+                  create: (context) => DrivingModeModel(key: ''),
+                ),
+              ],
+              child: const KeyPressListenerPage(
+                child: DragBody(),
+              ),
+            ),
             AnimatedPositioned(
               duration: const Duration(milliseconds: 300),
               left: _isDrawerOpen ? 0 : -300,
