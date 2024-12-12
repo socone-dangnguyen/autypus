@@ -3,6 +3,7 @@ import 'package:autypus/features/dashboard/models/car_data_model.dart';
 import 'package:autypus/features/dashboard/models/driving_mode_model.dart';
 import 'package:autypus/features/dashboard/presentation/views/menu_extension.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/circle_meter.dart';
+import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/dashline_meter.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drag_body.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/drawer_items.dart';
 import 'package:autypus/features/dashboard/presentation/widgets/dashboard_items/highway.dart';
@@ -68,7 +69,13 @@ class _DashboardState extends State<Dashboard> {
         body: Stack(
           children: [
             // Highway(),
-
+            // DashlineMeter(
+            //   value: 6,
+            //   startLabel: 'E',
+            //   endLabel: 'F',
+            //   numberDivisions: 10,
+            //   iconPath: 'assets/icons/fuel_gauge.png',
+            // ),
             const Positioned(
               right: 0,
               left: 0,
